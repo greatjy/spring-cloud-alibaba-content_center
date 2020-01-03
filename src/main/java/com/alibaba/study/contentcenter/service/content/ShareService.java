@@ -15,6 +15,8 @@ import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * @Author: wjy
@@ -36,7 +38,16 @@ public class ShareService {
         // 通过discoveryClient 可以得到user-center的所有实例信息
         List<ServiceInstance> instances = discoveryClient.getInstances("user-center");
         // instance中的uri正式我们需要的发送http请求的地址 然后拼接上查询userDTO的接口
-        String uri =instances.get(0).getUri().toString()+"/users/{id}";
+        //再这里我们实现随机算法进行负载均衡
+        int size = instances.size();
+        int index = 0;
+        if(size <= 1){
+            index = 0;
+        }
+        else{
+            index = ThreadLocalRandom.current().nextInt(size);
+        }
+        String uri =instances.get(index).getUri().toString()+"/users/{id}";
         log.info("we will request this uri {}", uri);
 
         // 通过RestTemplate 发送http请求 实现异步调用
