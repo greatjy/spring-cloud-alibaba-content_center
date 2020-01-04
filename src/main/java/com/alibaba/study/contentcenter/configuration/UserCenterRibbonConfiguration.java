@@ -1,7 +1,6 @@
 package com.alibaba.study.contentcenter.configuration;
 
-import com.alibaba.study.ribbonconfiguration.RibbonConfiguration;
-import org.springframework.cloud.netflix.ribbon.RibbonClient;
+import org.springframework.cloud.netflix.ribbon.RibbonClients;
 import org.springframework.context.annotation.Configuration;
 
 /**
@@ -9,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
  * @Date: 2020/1/3 22:44
  */
 @Configuration
-@RibbonClient(name = "user-center", configuration = RibbonConfiguration.class)
+@RibbonClients(defaultConfiguration =  NacosWeightedRule.class)
 public class UserCenterRibbonConfiguration {
 
 }

@@ -15,5 +15,4 @@ public class RibbonConfiguration {
     public IRule ribbonRule(){
         return new RandomRule();
     }
-
 }
