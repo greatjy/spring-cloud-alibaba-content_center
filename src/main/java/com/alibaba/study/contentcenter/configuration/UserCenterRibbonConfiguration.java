@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
  * @Date: 2020/1/3 22:44
  */
 @Configuration
-@RibbonClients(defaultConfiguration =  NacosWeightedRule.class)
+@RibbonClients(defaultConfiguration =  NacosClusterPriorityRule.class)
 public class UserCenterRibbonConfiguration {
 
 }
