@@ -29,27 +29,13 @@ public class ShareService {
 
     private final ShareMapper shareMapper;
     private final RestTemplate restTemplate;
-    private final DiscoveryClient discoveryClient;
 
     public ShareDTO findShareById(Integer id){
         Share share =  shareMapper.selectByPrimaryKey(id);
         Integer userId = share.getUserId();
 
-        // 通过discoveryClient 可以得到user-center的所有实例信息
-        List<ServiceInstance> instances = discoveryClient.getInstances("user-center");
-        // instance中的uri正式我们需要的发送http请求的地址 然后拼接上查询userDTO的接口
-        //再这里我们实现随机算法进行负载均衡
-        int size = instances.size();
-        int index = 0;
-        if(size <= 1){
-            index = 0;
-        }
-        else{
-            index = ThreadLocalRandom.current().nextInt(size);
-        }
-        String uri =instances.get(index).getUri().toString()+"/users/{id}";
+        String uri ="http://user-center/users/{id}";
         log.info("we will request this uri {}", uri);
-
         // 通过RestTemplate 发送http请求 实现异步调用
         // 将http返回的响应转成userDTO类
         UserDTO userDTO = this.restTemplate.getForObject(uri,
