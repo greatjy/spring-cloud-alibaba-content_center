@@ -8,3 +8,4 @@ springcloudalibaba 项目微信小程序 中的用户中心微服务
 4. 整合了springcloud 和 springcloudalibaba 
 5. 整合了 Nacos 服务发现 
 6. 整合了 Ribbon 客户端侧负载均衡，并且扩展了两种方式负载均衡：按照nacos权重和优先调用统一cluster
+7. 整合了http客户端feign，重构了RestTemplate代码逻辑
