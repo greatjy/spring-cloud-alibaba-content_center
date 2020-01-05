@@ -23,3 +23,19 @@ management:
 server:
   port: 8010
 
+logging:
+  level:
+    com.alibaba.study.contentcenter.feignclient.UserCenterFeignClient: debug
+
+
+ribbon:
+  eager-load:
+    clients: user-center
+    enabled: true
+
+feign:
+  client:
+    config:
+      # want call microservice name
+      user-center:
+        loggerLevel: full
