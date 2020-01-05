@@ -4,6 +4,7 @@ import com.alibaba.study.contentcenter.dao.share.ShareMapper;
 import com.alibaba.study.contentcenter.domain.dto.content.ShareDTO;
 import com.alibaba.study.contentcenter.domain.dto.user.UserDTO;
 import com.alibaba.study.contentcenter.domain.entity.share.Share;
+import com.alibaba.study.contentcenter.feignclient.UserCenterFeignClient;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -28,23 +29,17 @@ import java.util.concurrent.ThreadLocalRandom;
 public class ShareService {
 
     private final ShareMapper shareMapper;
-    private final RestTemplate restTemplate;
+    private final UserCenterFeignClient userCenterFeignClient;
 
     public ShareDTO findShareById(Integer id){
         Share share =  shareMapper.selectByPrimaryKey(id);
         Integer userId = share.getUserId();
-
-        String uri ="http://user-center/users/{id}";
-        log.info("we will request this uri {}", uri);
-        // 通过RestTemplate 发送http请求 实现异步调用
-        // 将http返回的响应转成userDTO类
-        UserDTO userDTO = this.restTemplate.getForObject(uri,
-                UserDTO.class, userId);
+        // 使用feign 声明式http请求 自动请求和自动转换成指定的对象  只需要定义一个接口，声明一个方法
+        UserDTO userDTO = this.userCenterFeignClient.findById(id);
         //消息的装配  封装一个shareDTO 用来返回所有需要的字段内容
         ShareDTO shareDTO = new ShareDTO();
         BeanUtils.copyProperties(share, shareDTO);
         shareDTO.setWxNickname(userDTO.getWxNickname());
         return shareDTO;
     }
-
 }

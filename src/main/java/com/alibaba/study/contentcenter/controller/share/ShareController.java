@@ -2,6 +2,7 @@ package com.alibaba.study.contentcenter.controller.share;
 
 import com.alibaba.study.contentcenter.domain.dto.content.ShareDTO;
 import com.alibaba.study.contentcenter.service.content.ShareService;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
