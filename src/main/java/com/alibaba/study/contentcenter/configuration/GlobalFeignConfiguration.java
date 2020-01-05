@@ -8,8 +8,7 @@ import org.springframework.context.annotation.Configuration;
  * @Author: wjy
  * @Date: 2020/1/5 17:31
  */
-@Configuration
-public class UserCenterFeignConfiguration {
+public class GlobalFeignConfiguration {
 
     @Bean
     public Logger.Level setLevel(){

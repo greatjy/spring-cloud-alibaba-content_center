@@ -2,6 +2,8 @@ package com.alibaba.study.contentcenter;
 
 import com.alibaba.study.contentcenter.dao.share.ShareMapper;
 import com.alibaba.study.contentcenter.domain.entity.share.Share;
+import com.alibaba.study.contentcenter.feignclient.TestBaiduFeignClient;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
@@ -16,6 +18,7 @@ import java.util.List;
  * @Date: 2019/12/29 21:59
  */
 @RestController
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class TestController {
 
     @Autowired
@@ -26,6 +29,8 @@ public class TestController {
 
     @Autowired
     private DiscoveryClient discoveryClient;
+
+    private final TestBaiduFeignClient testBaiduFeignClient;
 
     @GetMapping("testInsert")
     public List<Share> testInsert() {
@@ -50,6 +55,11 @@ public class TestController {
     @GetMapping("test3")
     public List<String> test_services(){
         return this.discoveryClient.getServices();
+    }
+
+    @GetMapping("testBaidu")
+    public String testBaidu(){
+        return this.testBaiduFeignClient.testBaidu();
     }
 
 }

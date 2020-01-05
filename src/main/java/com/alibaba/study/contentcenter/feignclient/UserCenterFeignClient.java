@@ -1,6 +1,5 @@
 package com.alibaba.study.contentcenter.feignclient;
 
-import com.alibaba.study.contentcenter.configuration.UserCenterFeignConfiguration;
 import com.alibaba.study.contentcenter.domain.dto.user.UserDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,4 +20,8 @@ public interface UserCenterFeignClient {
      */
     @GetMapping("/users/{id}")
     UserDTO findById(@PathVariable(value = "id") Integer id);
+
+
+    @GetMapping("/users/q")
+    UserDTO queryUser(UserDTO userDTO);
 }
