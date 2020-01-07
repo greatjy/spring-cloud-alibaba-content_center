@@ -1,14 +1,18 @@
 package com.alibaba.study.contentcenter;
 
 import com.alibaba.study.contentcenter.dao.share.ShareMapper;
+import com.alibaba.study.contentcenter.domain.dto.user.UserDTO;
 import com.alibaba.study.contentcenter.domain.entity.share.Share;
 import com.alibaba.study.contentcenter.feignclient.TestBaiduFeignClient;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.Date;
 import java.util.List;
@@ -19,6 +23,7 @@ import java.util.List;
  */
 @RestController
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@Slf4j
 public class TestController {
 
     @Autowired
@@ -31,6 +36,8 @@ public class TestController {
     private DiscoveryClient discoveryClient;
 
     private final TestBaiduFeignClient testBaiduFeignClient;
+
+    private final RestTemplate restTemplate;
 
     @GetMapping("testInsert")
     public List<Share> testInsert() {
@@ -61,5 +68,14 @@ public class TestController {
     public String testBaidu(){
         return this.testBaiduFeignClient.testBaidu();
     }
+
+    @GetMapping("test/{userid}")
+    public UserDTO test(@PathVariable("userid") Integer userId) {
+        log.warn("restTemplate {}",this.restTemplate);
+        UserDTO userDTO = this.restTemplate.getForObject("http://user-center/users/{userId}", UserDTO.class, userId);
+        return userDTO;
+    }
+
+
 
 }
