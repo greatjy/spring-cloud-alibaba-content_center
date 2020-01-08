@@ -46,3 +46,14 @@ feign:
     enabled: true
     max-connections: 200
     max-connections-per-route: 50
+  # Intellij idea does not display a prompt, but it is useful
+  # Integer sentinel for feign
+  sentinel:
+    enabled: true
+
+#ahas.namespace: default
+#project.name: content-center
+#ahas.license: 9399980bad5a4a9dba8b066bcd44d633
+
+
+
