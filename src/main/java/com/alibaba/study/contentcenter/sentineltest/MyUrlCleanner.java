@@ -17,7 +17,7 @@ public class MyUrlCleanner implements UrlCleaner {
             if(NumberUtils.isNumber(string)){
                 return "{number}";
             }
-            return string
+            return string;
         })
                 .reduce((a,b) -> a + "/" + b)
                 .orElse("");
