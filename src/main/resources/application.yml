@@ -50,10 +50,15 @@ feign:
   # Integer sentinel for feign
   sentinel:
     enabled: true
+rocketmq:
+  name-server: localhost:9876
+  producer:
+    group: test-group
 
 #ahas.namespace: default
 #project.name: content-center
 #ahas.license: 9399980bad5a4a9dba8b066bcd44d633
+
 
 
 

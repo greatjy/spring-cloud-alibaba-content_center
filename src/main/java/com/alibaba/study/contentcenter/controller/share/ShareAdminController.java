@@ -6,10 +6,7 @@ import com.alibaba.study.contentcenter.service.content.ShareService;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @Author: wjy
@@ -22,6 +19,7 @@ public class ShareAdminController {
 
     private final ShareService shareService;
 
+    @PutMapping("/audit/{id}")
     public Share auditById(@PathVariable Integer id, @RequestBody ShareAuditDTO auditDTO){
         // toDo 认证授权
         return this.shareService.auditById(id, auditDTO);

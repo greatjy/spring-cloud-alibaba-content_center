@@ -5,9 +5,11 @@ import com.alibaba.study.contentcenter.domain.dto.content.ShareAuditDTO;
 import com.alibaba.study.contentcenter.domain.dto.content.ShareDTO;
 import com.alibaba.study.contentcenter.domain.dto.user.UserDTO;
 import com.alibaba.study.contentcenter.domain.entity.share.Share;
+import com.alibaba.study.contentcenter.domain.messageing.UserAddBonusMsgDTO;
 import com.alibaba.study.contentcenter.feignclient.UserCenterFeignClient;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
@@ -32,6 +34,7 @@ public class ShareService {
 
     private final ShareMapper shareMapper;
     private final UserCenterFeignClient userCenterFeignClient;
+    private final RocketMQTemplate rocketMQTemplate;
 
     public ShareDTO findShareById(Integer id){
         Share share =  shareMapper.selectByPrimaryKey(id);
@@ -51,7 +54,7 @@ public class ShareService {
         if(share == null ){
             throw new IllegalArgumentException("参数非法，该share不存在!");
         }
-        if(!Objects.equals("NOT_YET)", share.getAuditStatus())){
+        if(!Objects.equals("NOT_YET", share.getAuditStatus())){
             throw new IllegalArgumentException("该share已经经过审核");
         }
         //审核资源，pass/reject 将前端传过来的dto的审核值赋给share 更新share对象
@@ -61,6 +64,11 @@ public class ShareService {
         // pass给作者添加积分。 需要调用用户中心
         // 可以使用feignclient 来更新user的属性 如果耗时，用户体验不好。可以将这个操作当作一个异步的操作
         // 有效缩短响应时间
+        this.rocketMQTemplate.convertAndSend("add_bonus",UserAddBonusMsgDTO.builder()
+                .userId(share.getUserId())
+                .bonus(50)
+                .build()
+        );
 
         return share;
     }
