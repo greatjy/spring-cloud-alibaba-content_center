@@ -12,6 +12,13 @@ spring:
     sentinel:
       transport:
         dashboard: localhost:8080
+    stream:
+      rocketmq:
+        binder:
+          name-server: localhost:9876
+      bindings:
+        output:
+          destination: stream-test-topic
   application:
     name: content-center
 
